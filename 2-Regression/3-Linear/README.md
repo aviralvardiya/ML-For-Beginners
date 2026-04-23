@@ -258,7 +258,21 @@ pipeline.fit(X_train,y_train)
 
 Using `PolynomialFeatures(2)` means that we will include all second-degree polynomials from the input data. In our case it will just mean `DayOfYear`<sup>2</sup>, but given two input variables X and Y, this will add X<sup>2</sup>, XY and Y<sup>2</sup>. We may also use higher degree polynomials if we want.
 
-Pipelines can be used in the same manner as the original `LinearRegression` object, i.e. we can `fit` the pipeline, and then use `predict` to get the prediction results. Here is the graph showing test data, and the approximation curve:
+Pipelines can be used in the same manner as the original `LinearRegression` object, i.e. we can `fit` the pipeline, and then use `predict` to get the prediction results:
+
+```python
+# Create smooth range for visualization
+X_range = np.linspace(X_test.min(),X_test.max(),100).reshape(-1,1)
+pred = pipeline.predict(X_range)
+
+# Plot the smooth curve
+plt.scatter(X_test, y_test)
+plt.plot(X_range, pred)
+```
+> **Why use `np.linspace` for plotting?** 
+> The predictions from `X_test` may not be in sequential order because `train_test_split` randomly shuffles the data. If you plot predictions directly on unsorted test data, matplotlib connects points in the order they appear, creating a zigzagged or scribbled line. To get a smooth visualization curve, create a uniform range of input values across the full span of your data using `np.linspace`:
+
+Here is the graph showing test data, and the approximation curve:
 
 <img alt="Polynomial regression" src="images/poly-results.png" width="50%" />
 
